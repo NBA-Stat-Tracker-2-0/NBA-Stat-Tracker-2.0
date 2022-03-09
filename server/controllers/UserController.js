@@ -1,6 +1,9 @@
 const path = require('path');
 const { OAuth2Client } = require('google-auth-library');
+<<<<<<< HEAD
+=======
 // const User = require('../models/UserModels');//mongo
+>>>>>>> 6416605f6a6f88083d18ce7c8b6252069453c12b
 const db = require('../models/UserModels');
 
 const { CLIENT_ID } = process.env;
@@ -58,6 +61,24 @@ const UserController = {
     const { teamId } = req.params;
     const query = {};
 
+<<<<<<< HEAD
+    query.favorited_teams = teamId;
+    User.findOneAndUpdate(
+      { email: req.cookies.email },
+      { $addToSet: query },
+      { new: true },
+      (err, user) => {
+        if (err) {
+          return next({
+            log: 'Error in addTeam middleware',
+            message: { err: 'An error occurred while trying to add a team' },
+          });
+        }
+        res.locals.teams = user.favorited_teams;
+        return next();
+      }
+    );
+=======
     const addTeamQuery = 'INSERT INTO favoriteTeams VALUES ($1, $2) ON CONFLICT DO NOTHING';
     const values = [res.cookies.email, teamId];
 
@@ -90,6 +111,7 @@ const UserController = {
     //     return next();
     //   }
     // );
+>>>>>>> 6416605f6a6f88083d18ce7c8b6252069453c12b
   },
 
   removeTeam(req, res, next) {
@@ -131,27 +153,45 @@ const UserController = {
   },
 
   addPlayer(req, res, next) {
-    const { playerId } = req.params;
-    const query = {};
-    query.favorited_players = playerId;
-    User.findOneAndUpdate(
-      { email: req.cookies.email },
-      { $addToSet: query },
-      { new: true },
-      (err, user) => {
-        if (err) {
-          return next({
-            log: 'Error in addPlayer middleware',
-            message: {
-              err: 'An error occurred while trying to add a player',
-            },
-          });
-        }
-        res.locals.players = user.favorited_players;
-        return next();
-      }
-    );
+   const { playerId } = req.params;
+
+   const addPlayer = 'INSERT INTO favoritePlayers (email, player_id) VALUES ($1, $2) on DEFAULT NULL';
+   const values = [res.cookies.email, playerId];
+   const getFavPlayerQuery = 'SELECT player_id FROM favoritePlayers WHERE email = $1';
+
+   db.query(addPlayer, values)
+   .then(() =>
+    db.query(getFavPlayerQuery, [res.cookies.email])
+    .then(() => {
+      res.locals.players = favoritePlayers.player_id;
+      return next();
+    })
+   ).catch((err) => next(err));
   },
+
+  // addPlayer(req, res, next) {
+  //   const { playerId } = req.params;
+  //   const query = {};
+  //   query.favorited_players = playerId;
+  //   User.findOneAndUpdate(
+  //     { email: req.cookies.email },
+  //     { $addToSet: query },
+  //     { new: true },
+  //     (err, user) => {
+  //       if (err) {
+  //         return next({
+  //           log: 'Error in addPlayer middleware',
+  //           message: {
+  //             err: 'An error occurred while trying to add a player',
+  //           },
+  //         });
+  //       }
+  //       res.locals.players = user.favorited_players;
+  //       return next();
+  //     }
+  //   );
+  // },
+
 
   removePlayer(req, res, next) {
     const { playerId } = req.params;
