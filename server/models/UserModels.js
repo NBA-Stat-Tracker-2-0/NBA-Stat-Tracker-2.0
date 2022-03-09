@@ -1,41 +1,21 @@
-const mongoose = require("mongoose");
+const { Pool } = require('pg');
+const dotenv = require('dotenv');
 
-const MONGO_URI =
-  "mongodb+srv://aidenblinn:Goy7rbVkyC7HCzV9@cluster0.ztwql.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+//connect to postgre
+const PG_URI = 'postgres://ELEPHANTSQL';
 
-mongoose
-  .connect(MONGO_URI, {
-    // options for the connect method to parse the URI
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    dbName: "userData",
-    // sets the name of the DB that our collections are part of
-  })
-  .then(() => console.log("Connected to Mongo DB."))
-  .catch((err) => console.log(err));
+dotenv.config();
 
-mongoose.set("debug", true);
-
-const { Schema } = mongoose;
-
-// sets a schema for the 'species' collection
-const userSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  profilePic: {
-    type: String,
-    default: "",
-  },
-  favorited_teams: [String],
-  favorited_players: [String],
+// Use a pool so we don't have to keep making new connections to the db to make queries?
+const pool = new Pool({
+  connectionString: process.env.PG_URI,
 });
 
-// creats a model for the 'users' collection that will be part of the export
-module.exports = mongoose.model("user", userSchema);
+// export object with custom query method so we can add functionality
+// to the query method (console.log)
+module.exports = {
+  query: (text, params, callback) => {
+    console.log('executed query', text);
+    return pool.query(text, params, callback);
+  },
+};
