@@ -16,12 +16,13 @@ body {
 
 #sign-in {
   margin: auto;
+  border-radius: 10px;
   width: fit-content;
 }
 
 #log-out{
   padding: 15px 20px;
-  background: none;
+  // background: none;
   border: none;
   border-radius: 10px;
 }
