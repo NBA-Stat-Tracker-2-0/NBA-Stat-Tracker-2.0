@@ -15,7 +15,7 @@ function SearchBox({ setFavsPlayer, setFavsTeam }) {
 
   // generates random key
   const getRandomKey = () => {
-    const keys = process.env.keys.split(' '); [ key1, key2 ]
+    const keys = process.env.keys.split(' ');
     return keys[Math.floor(Math.random() * keys.length)];
   };
 
