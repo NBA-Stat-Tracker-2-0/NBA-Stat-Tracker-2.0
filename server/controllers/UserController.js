@@ -55,7 +55,6 @@ const UserController = {
 
   addTeam(req, res, next) {
     const { teamId } = req.params;
-    const query = {};
 
     const addTeamQuery = 'INSERT INTO favoriteTeams VALUES ($1, $2) ON CONFLICT DO NOTHING';
     const values = [res.cookies.email, teamId];
@@ -63,14 +62,7 @@ const UserController = {
     const getFavTeamQuery = 'SELECT team_id FROM favoriteTeams WHERE email = $1'
 
     db.query(addTeamQuery, values)
-      .then(() =>
-        db.query(getFavTeamQuery, [res.cookie.email])
-          .then(() => {
-            res.locals.teams = user.favorited_teams
-            return next()
-          }
-        )
-      )
+      .then(next())
       .catch((err) => next(err));
 
     // query.favorited_teams = teamId;
@@ -131,18 +123,12 @@ const UserController = {
   addPlayer(req, res, next) {
    const { playerId } = req.params;
 
-   const addPlayerQuery = 'INSERT INTO favoritePlayers (email, player_id) VALUES ($1, $2) on DEFAULT NULL';
+   const addPlayerQuery = 'INSERT INTO favoritePlayers (email, player_id) VALUES ($1, $2) on DEFAULT NULL;';
    const values = [res.cookies.email, playerId];
-   const getFavPlayerQuery = 'SELECT player_id FROM favoritePlayers WHERE email = $1';
 
-   db.query(addPlayer, values)
-   .then(() =>
-    db.query(getFavPlayerQuery, [req.cookies.email])
-    .then(() => {
-      res.locals.players = favoritePlayers.player_id;
-      return next();
-    })
-   ).catch((err) => next(err));
+   db.query(addPlayerQuery, values)
+   .then(next())
+   .catch((err) => next(err));
   },
 
   // addPlayer(req, res, next) {
@@ -172,9 +158,9 @@ const UserController = {
   removePlayer(req, res, next) {
     const { teamId } = req.params;
     
-    const removePlayerQuery = 'DELETE FROM favoritePlayers (email, player_id) VALUES ($1, $2) on DEFAULT NULL';
+    const removePlayerQuery = 'DELETE FROM favoritePlayers (email, player_id) VALUES ($1, $2) on DEFAULT NULL;';
     const values = [res.cookies.email, playerId];
-    const getFavPlayerQuery = 'SELECT player_id FROM favoritePlayers WHERE email = $1';
+    const getFavPlayerQuery = 'SELECT player_id FROM favoritePlayers WHERE email = $1;';
     
     db.query(removePlayerQuery, values)
     .then(() =>
