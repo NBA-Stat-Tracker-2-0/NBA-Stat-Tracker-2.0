@@ -1,6 +1,6 @@
 const path = require('path');
 const { OAuth2Client } = require('google-auth-library');
-const User = require('../models/UserModels');
+const db = require('../models/UserModels');
 
 const { CLIENT_ID } = process.env;
 const client = new OAuth2Client(CLIENT_ID);
@@ -50,6 +50,7 @@ const UserController = {
   addTeam(req, res, next) {
     const { teamId } = req.params;
     const query = {};
+
     query.favorited_teams = teamId;
     User.findOneAndUpdate(
       { email: req.cookies.email },
@@ -90,27 +91,45 @@ const UserController = {
   },
 
   addPlayer(req, res, next) {
-    const { playerId } = req.params;
-    const query = {};
-    query.favorited_players = playerId;
-    User.findOneAndUpdate(
-      { email: req.cookies.email },
-      { $addToSet: query },
-      { new: true },
-      (err, user) => {
-        if (err) {
-          return next({
-            log: 'Error in addPlayer middleware',
-            message: {
-              err: 'An error occurred while trying to add a player',
-            },
-          });
-        }
-        res.locals.players = user.favorited_players;
-        return next();
-      }
-    );
+   const { playerId } = req.params;
+
+   const addPlayer = 'INSERT INTO favoritePlayers (email, player_id) VALUES ($1, $2) on DEFAULT NULL';
+   const values = [res.cookies.email, playerId];
+   const getFavPlayerQuery = 'SELECT player_id FROM favoritePlayers WHERE email = $1';
+
+   db.query(addPlayer, values)
+   .then(() =>
+    db.query(getFavPlayerQuery, [res.cookies.email])
+    .then(() => {
+      res.locals.players = favoritePlayers.player_id;
+      return next();
+    })
+   ).catch((err) => next(err));
   },
+
+  // addPlayer(req, res, next) {
+  //   const { playerId } = req.params;
+  //   const query = {};
+  //   query.favorited_players = playerId;
+  //   User.findOneAndUpdate(
+  //     { email: req.cookies.email },
+  //     { $addToSet: query },
+  //     { new: true },
+  //     (err, user) => {
+  //       if (err) {
+  //         return next({
+  //           log: 'Error in addPlayer middleware',
+  //           message: {
+  //             err: 'An error occurred while trying to add a player',
+  //           },
+  //         });
+  //       }
+  //       res.locals.players = user.favorited_players;
+  //       return next();
+  //     }
+  //   );
+  // },
+
 
   removePlayer(req, res, next) {
     const { playerId } = req.params;
