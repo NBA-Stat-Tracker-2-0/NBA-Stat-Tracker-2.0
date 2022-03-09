@@ -4,8 +4,15 @@ $sidebar-width: 300px;
 body {
   overscroll-behavior: none;
   margin: 0px;
-  background: pink;
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.7;
+  color: white;
+  background-image: linear-gradient( rgba(8, 11, 15, 0.925), rgb(15, 7, 7)), url(../assets/background.jpg);
+  background-blend-mode: saturation;
 }
+
 
 #sign-in {
   margin: auto;
@@ -21,29 +28,30 @@ body {
   top: 0px;
   width: 100%;
   height: $header-height;
-  background: red;
+  // background-color: rgba(42, 4, 214, 0.5);
   z-index: -1;
   margin: 0;
 }
 
 #sidebar {
+  letter-spacing: 0.2vh;
   position: fixed;
   left: 0;
   top: $header-height;
   height: calc(100vh - $header-height);
-  background: blue;
+  // background: blue;
   width: $sidebar-width;
 }
 
 #search-bar {
   height: 40%;
-  background: green;
+  // background-color: rgba(0, 95, 48, 0.541);
   margin-bottom: 15px;
 }
 
 #favorites {
   height: 40%;
-  background-image: url('https://static.wikia.nocookie.net/disney/images/e/e4/Getcha_head.jpg');
+  // background-image: url('https://static.wikia.nocookie.net/disney/images/e/e4/Getcha_head.jpg');
   width: 100%;
 }
 
@@ -54,5 +62,5 @@ body {
   overflow-y: auto;
   width: calc(100vw - $sidebar-width);
   height: calc(100% - $header-height);
-  background: pink;
+  // background-color: rgba(231, 229, 229, 0.404);
 }
