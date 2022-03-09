@@ -35,7 +35,6 @@ const UserController = {
       // let user = await User.findOne({ email: email.split('@')[0] });
       const userQuery = 'Select * FROM users WHERE email = $1';
       const values = [name, email, picture];
-      const user = '';
       let user = await db.query(userQuery, [email.split('@')[0]]);
 
       if (!user) {
@@ -94,7 +93,6 @@ const UserController = {
 
   removeTeam(req, res, next) {
     const { teamId } = req.params;
-    const query = {};
 
     const removeTeamQuery = 'DELETE FROM favoriteTeams VALUES ($1, $2)';
     const values = [res.cookies.email, teamId];
