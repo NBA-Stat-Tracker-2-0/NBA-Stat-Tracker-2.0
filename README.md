@@ -21,3 +21,15 @@ Create Table players (
   id SERIAL,
   names INT
 );
+
+Create Table favoriteTeams (
+  id SERIAL,
+  user_id INT,
+  team_id
+);
+
+Create Table teams (
+  id SERIAL,
+  names varchar
+);
+
