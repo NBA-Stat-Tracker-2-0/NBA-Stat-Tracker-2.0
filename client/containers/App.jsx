@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-filename-extension */
 import React, { Component, useState } from 'react';
-import MainContainer from './MainContainer.js';
-import { Switch, Route } from 'react-router-dom';
-import GoogleLoginHook from '../components/GoogleLoginHook.js';
-import GoogleLogoutHook from '../components/GoogleLogoutHook.js';
+import MainContainer from './MainContainer.jsx';
+import { Route, Link } from 'react-router-dom';
+import GoogleLoginHook from '../components/GoogleLoginHook.jsx';
+import GoogleLogoutHook from '../components/GoogleLogoutHook.jsx';
 
 // use useContext instead grab context from Login
 // const [ loggedIn ] = useState('');

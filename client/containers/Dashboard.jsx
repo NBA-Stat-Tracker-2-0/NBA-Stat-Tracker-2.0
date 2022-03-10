@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import Team from '../components/Team';
 import Player from '../components/Player';
+import FavTeams from './FavTeams';
+import FavPlayers from './FavPlayers';
+import { Routes, Route } from 'react-router-dom';
 
 function Dashboard({ favsPlayer, favsTeam, setFavsPlayer, setFavsTeam }) {
   console.log("favsPlayer", favsPlayer);
@@ -18,16 +21,20 @@ function Dashboard({ favsPlayer, favsTeam, setFavsPlayer, setFavsTeam }) {
 
   return (
     <div id="dashboard">
-      <div id="teams">
+      <Routes>
+      <Route path = "/favorite-players" element = {<FavPlayers/>}/>
+      <Route path = "/favorite-teams" element = {<FavTeams />}/>
+      </Routes>
+    </div>
+  );
+}
+{/* <div id="teams">
         <h2>Teams</h2>
         {teamComponents}
       </div>
       <div id="players">
         <h2>Players</h2>
         {playerComponents}
-      </div>
-    </div>
-  );
-}
-
+      </div> */}
+      
 export default Dashboard;
