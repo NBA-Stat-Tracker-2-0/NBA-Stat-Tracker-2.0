@@ -13,8 +13,7 @@ document.getElementById('client_id').content = process.env.CLIENT_ID;
 
 // class App extends Component {
 function App() {
-  const [favsPlayer, setFavsPlayer] = useState([]);
-  const [favsTeam, setFavsTeam] = useState([]);
+  
 
   return (
     <>
@@ -28,12 +27,7 @@ function App() {
       <GoogleLoginHook />
       <GoogleLogoutHook />
       {/* if logged in, render dashboard */}
-      <MainContainer
-        favsPlayer={favsPlayer}
-        favsTeam={favsTeam}
-        setFavsPlayer={setFavsPlayer}
-        setFavsTeam={setFavsTeam}
-      />
+      <MainContainer/>
     </>
   );
 }

@@ -5,6 +5,7 @@ let teamPlayerVitals;
 let teamPlayerNames = [];
 
 function SearchBox({ setFavsPlayer, setFavsTeam }) {
+
   const makeTeamDropdown = (nbaTeams) => {
     nbaTeams.forEach((team) => {
       const option = document.createElement('option');
@@ -30,6 +31,7 @@ function SearchBox({ setFavsPlayer, setFavsTeam }) {
       .then((data) => data.json())
       .then((data) => {
         const nbaTeams = [];
+        console.log(data)
         data.response.forEach((team) => {
           if (
             team.nbaFranchise === true &&
@@ -102,7 +104,10 @@ function SearchBox({ setFavsPlayer, setFavsTeam }) {
       method: 'POST',
     })
       .then((data) => data.json())
-      .then((data) => setFavsTeam(data));
+      .then((data) => {
+        //setFavsTeam(data);
+        console.log("add favorite team successful")
+      });
   };
 
   // add favorited player to database and set state
@@ -113,7 +118,10 @@ function SearchBox({ setFavsPlayer, setFavsTeam }) {
       body: JSON.stringify(playerId),
     })
       .then((data) => data.json())
-      .then((data) => setFavsPlayer(data));
+      .then((data) => {
+        //setFavsPlayer(data)
+        console.log("add favorite player successful")
+      });
   };
 
   return (
